@@ -6,7 +6,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.spbstu.entity.Order;
@@ -35,11 +35,11 @@ public class OrderController {
     public void init() {
         initOrderCounters();
         Gauge.builder("shop.all.orders", orders, Collection::size)
-                .description("x")
+                .description("The all number of orders")
                 .register(meterRegistry);
     }
 
-    @GetMapping("/createOrder")
+    @PostMapping("/createOrder")
     public ResponseEntity<String> getMetrics(@RequestParam("type") String type) {
         PayType payType = PayType.valueOf(type);
         Order order = Order.builder()
